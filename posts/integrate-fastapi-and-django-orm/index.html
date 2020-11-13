@@ -1,0 +1,139 @@
+<!doctype html><html lang=en><head><title>The integration of FastAPI and Django ORM :: map(learn, world)</title><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=description content="This is the English translation of the Japanese original post at qiita, with some modifications.
+Motivation Recently FastAPI is growing incredibly. It&amp;rsquo;s blazingly fast and painless to develop, with 5~10x performance enhancement over Django or Flask.
+I really want to switch to FastAPI from Django, however, it&amp;rsquo;s not that easy to give up Django and its self-sufficient user system as well as the admin page totally. I know it sounds greedy, but in fact there is such convenience."><meta name=keywords content><meta name=robots content="noodp"><link rel=canonical href=/posts/integrate-fastapi-and-django-orm/><link rel=stylesheet href=/assets/style.css><link rel=stylesheet href=/assets/blue.css><link rel=apple-touch-icon href=/img/apple-touch-icon-192x192.png><link rel="shortcut icon" href=/favicon.ico><meta name=twitter:card content="summary"><meta name=twitter:site content><meta name=twitter:creator content><meta property="og:locale" content="en"><meta property="og:type" content="article"><meta property="og:title" content="The integration of FastAPI and Django ORM"><meta property="og:description" content="A step-by-step guide to integrating FastAPI and Django ORM"><meta property="og:url" content="/posts/integrate-fastapi-and-django-orm/"><meta property="og:site_name" content="map(learn, world)"><meta property="og:image" content="/"><meta property="og:image:width" content="2048"><meta property="og:image:height" content="1024"><meta property="article:published_time" content="2020-10-12 00:00:00 +0000 UTC"></head><body class=blue><div class="container center headings--one-size"><header class=header><div class=header__inner><div class=header__logo><a href=/><div class=logo>map(learn, world)</div></a></div><div class=menu-trigger>menu</div></div><nav class=menu><ul class="menu__inner menu__inner--desktop"><li><a href=/about>About</a></li></ul><ul class="menu__inner menu__inner--mobile"><li><a href=/about>About</a></li></ul></nav></header><div class=content><div class=post><h1 class=post-title><a href=/posts/integrate-fastapi-and-django-orm/>The integration of FastAPI and Django ORM</a></h1><div class=post-meta><span class=post-date>2020-10-12 [Updated: 2020-11-08]</span></div><span class=post-tags>#<a href=/tags/python/>Python</a>&nbsp;
+#<a href=/tags/web/>web</a>&nbsp;
+#<a href=/tags/fastapi/>FastAPI</a>&nbsp;
+#<a href=/tags/django/>Django</a>&nbsp;</span><div class=post-content><div><p>This is the English translation of the Japanese original post at <a href=https://qiita.com/kigawas/items/80e48ccce98a35f65fff>qiita</a>, with some modifications.</p><h2 id=motivation>Motivation<a href=#motivation class=hanchor arialabel=Anchor>&#8983;</a></h2><p>Recently FastAPI is <a href=https://star-history.t9t.io/#tiangolo/fastapi>growing incredibly</a>. It&rsquo;s blazingly fast and painless to develop, with <a href="https://www.techempower.com/benchmarks/#section=data-r19&hw=ph&test=fortune&l=zijzen-1r">5~10x performance enhancement</a> over Django or Flask.</p><p>I really want to switch to FastAPI from Django, however, it&rsquo;s not that easy to give up Django and its self-sufficient user system as well as the admin page totally. I know it sounds greedy, but in fact there <strong>is</strong> such convenience. This time I&rsquo;ll show you how to integrate FastAPI and Django ORM simply and quickly.</p><blockquote><p>There&rsquo;s also a demerit undoubtedly. Django ORM is not asynchronous and this will hurt performance.</p><p>If you&rsquo;d like to improve, you may consider using <a href=https://github.com/encode/orm>orm</a> or <a href=https://github.com/python-gino/gino>gino</a> to rewrite some logic.</p><p>By the way, Django ORM is also <a href=https://docs.djangoproject.com/en/3.1/topics/async/>having a plan</a> for supporting asyncio.</p></blockquote><h2 id=directory-structure>Directory structure<a href=#directory-structure class=hanchor arialabel=Anchor>&#8983;</a></h2><p>Let&rsquo;s talk about the directory structure first. You can just follow Django&rsquo;s <a href=https://docs.djangoproject.com/en/3.1/intro/tutorial01/>tutorial</a> to create the scaffold.</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>django-admin startproject mysite
+django-admin startapp poll
+</code></pre></div><p>If you&rsquo;re done, delete <code>views.py</code> and <code>models.py</code> and prepare the folders for FastAPI like below.</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>$ tree -L <span style=color:#ae81ff>3</span> -I <span style=color:#e6db74>&#39;__pycache__|venv&#39;</span> -P <span style=color:#e6db74>&#39;*.py&#39;</span>
+.
+├── manage.py
+├── mysite
+│   ├── __init__.py
+│   ├── asgi.py
+│   ├── settings.py
+│   ├── urls.py
+│   └── wsgi.py
+└── polls
+    ├── __init__.py
+    ├── adapters
+    │   └── __init__.py
+    ├── admin.py
+    ├── apps.py
+    ├── migrations
+    │   └── __init__.py
+    ├── models
+    │   └── __init__.py
+    ├── routers
+    │   └── __init__.py
+    ├── schemas
+    │   └── __init__.py
+    └── tests.py
+
+<span style=color:#ae81ff>7</span> directories, <span style=color:#ae81ff>15</span> files
+</code></pre></div><p>The usage of each directory:</p><ul><li><code>models</code>: Django ORM</li><li><code>routers</code>: FastAPI routers</li><li><code>adapters</code>: The adapters to retrieve Django ORMs</li><li><code>schemas</code>: FastAPI Pydantic models</li></ul><p>For a typical FastAPI application, there should be an ORM part and a Pydantic model/validator part. For how to convert ORMs to Pydantic models, normally we&rsquo;d like to utilize the <a href=https://pydantic-docs.helpmanual.io/usage/models/#orm-mode-aka-arbitrary-class-instances>ORM mode</a>.</p><h2 id=set-up-some-data>Set up some data<a href=#set-up-some-data class=hanchor arialabel=Anchor>&#8983;</a></h2><p>Let&rsquo;s refer to the <a href=https://docs.djangoproject.com/en/3.1/intro/tutorial02/>Django documentation</a> and insert some data:</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#f92672>&gt;&gt;&gt;</span> <span style=color:#f92672>from</span> polls.models <span style=color:#f92672>import</span> Choice, Question
+<span style=color:#f92672>&gt;&gt;&gt;</span> <span style=color:#f92672>from</span> django.utils <span style=color:#f92672>import</span> timezone
+<span style=color:#f92672>&gt;&gt;&gt;</span> q <span style=color:#f92672>=</span> Question(question_text<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;What&#39;s new?&#34;</span>, pub_date<span style=color:#f92672>=</span>timezone<span style=color:#f92672>.</span>now())
+<span style=color:#f92672>&gt;&gt;&gt;</span> q<span style=color:#f92672>.</span>save()
+</code></pre></div><h2 id=fastapi-integration>FastAPI integration<a href=#fastapi-integration class=hanchor arialabel=Anchor>&#8983;</a></h2><p>For simplicity, the codes below are all in the <code>__init__.py</code> file of each folder, and I&rsquo;ll also ignore some <code>import</code> statements.</p><h3 id=schemas><code>schemas</code><a href=#schemas class=hanchor arialabel=Anchor>&#8983;</a></h3><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#f92672>from</span> django.db <span style=color:#f92672>import</span> models
+<span style=color:#f92672>from</span> pydantic <span style=color:#f92672>import</span> BaseModel <span style=color:#66d9ef>as</span> _BaseModel
+
+<span style=color:#66d9ef>class</span> <span style=color:#a6e22e>BaseModel</span>(_BaseModel):
+    <span style=color:#a6e22e>@classmethod</span>
+    <span style=color:#66d9ef>def</span> <span style=color:#a6e22e>from_orms</span>(cls, instances: List[models<span style=color:#f92672>.</span>Model]):
+        <span style=color:#66d9ef>return</span> [cls<span style=color:#f92672>.</span>from_orm(inst) <span style=color:#66d9ef>for</span> inst <span style=color:#f92672>in</span> instances]
+
+
+<span style=color:#66d9ef>class</span> <span style=color:#a6e22e>FastQuestion</span>(BaseModel):
+    question_text: str
+    pub_date: datetime
+
+    <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>Config</span>:
+        orm_mode <span style=color:#f92672>=</span> True
+
+
+<span style=color:#66d9ef>class</span> <span style=color:#a6e22e>FastQuestions</span>(BaseModel):
+    items: List[FastQuestion]
+
+    <span style=color:#a6e22e>@classmethod</span>
+    <span style=color:#66d9ef>def</span> <span style=color:#a6e22e>from_qs</span>(cls, qs):
+        <span style=color:#66d9ef>return</span> cls(items<span style=color:#f92672>=</span>FastQuestion<span style=color:#f92672>.</span>from_orms(qs))
+
+
+<span style=color:#66d9ef>class</span> <span style=color:#a6e22e>FastChoice</span>(BaseModel):
+    question: FastQuestion
+    choice_text: str
+
+    <span style=color:#66d9ef>class</span> <span style=color:#a6e22e>Config</span>:
+        orm_mode <span style=color:#f92672>=</span> True
+
+
+<span style=color:#66d9ef>class</span> <span style=color:#a6e22e>FastChoices</span>(BaseModel):
+    items: List[FastChoice]
+
+    <span style=color:#a6e22e>@classmethod</span>
+    <span style=color:#66d9ef>def</span> <span style=color:#a6e22e>from_qs</span>(cls, qs):
+        <span style=color:#66d9ef>return</span> cls(items<span style=color:#f92672>=</span>FastChoice<span style=color:#f92672>.</span>from_orms(qs))
+</code></pre></div><h3 id=adapters><code>adapters</code><a href=#adapters class=hanchor arialabel=Anchor>&#8983;</a></h3><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python>ModelT <span style=color:#f92672>=</span> TypeVar(<span style=color:#e6db74>&#34;ModelT&#34;</span>, bound<span style=color:#f92672>=</span>models<span style=color:#f92672>.</span>Model)
+
+
+<span style=color:#66d9ef>def</span> <span style=color:#a6e22e>retrieve_object</span>(model_class: Type[ModelT], id: int) <span style=color:#f92672>-&gt;</span> ModelT:
+    instance <span style=color:#f92672>=</span> model_class<span style=color:#f92672>.</span>objects<span style=color:#f92672>.</span>filter(pk<span style=color:#f92672>=</span>id)<span style=color:#f92672>.</span>first()
+    <span style=color:#66d9ef>if</span> <span style=color:#f92672>not</span> instance:
+        <span style=color:#66d9ef>raise</span> HTTPException(status_code<span style=color:#f92672>=</span><span style=color:#ae81ff>404</span>, detail<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;Object not found.&#34;</span>)
+    <span style=color:#66d9ef>return</span> instance
+
+
+<span style=color:#66d9ef>def</span> <span style=color:#a6e22e>retrieve_question</span>(
+    q_id: int <span style=color:#f92672>=</span> Path(<span style=color:#f92672>...</span>, description<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;get question from db&#34;</span>)
+) <span style=color:#f92672>-&gt;</span> Question:
+    <span style=color:#66d9ef>return</span> retrieve_object(Question, q_id)
+
+
+<span style=color:#66d9ef>def</span> <span style=color:#a6e22e>retrieve_choice</span>(c_id: int <span style=color:#f92672>=</span> Path(<span style=color:#f92672>...</span>, description<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;get choice from db&#34;</span>)):
+    <span style=color:#66d9ef>return</span> retrieve_object(Choice, c_id)
+
+
+<span style=color:#66d9ef>def</span> <span style=color:#a6e22e>retrieve_questions</span>():
+    <span style=color:#66d9ef>return</span> Question<span style=color:#f92672>.</span>objects<span style=color:#f92672>.</span>all()
+
+
+<span style=color:#66d9ef>def</span> <span style=color:#a6e22e>retrieve_choices</span>():
+    <span style=color:#66d9ef>return</span> Choice<span style=color:#f92672>.</span>objects<span style=color:#f92672>.</span>all()
+</code></pre></div><h3 id=routers><code>routers</code><a href=#routers class=hanchor arialabel=Anchor>&#8983;</a></h3><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python>q_router <span style=color:#f92672>=</span> APIRouter()
+c_router <span style=color:#f92672>=</span> APIRouter()
+
+<span style=color:#a6e22e>@q_router.get</span>(<span style=color:#e6db74>&#34;/&#34;</span>)
+<span style=color:#66d9ef>def</span> <span style=color:#a6e22e>get_questions</span>(
+    questions: List[Question] <span style=color:#f92672>=</span> Depends(adapters<span style=color:#f92672>.</span>retrieve_questions),
+) <span style=color:#f92672>-&gt;</span> FastQuestions:
+    <span style=color:#66d9ef>return</span> FastQuestions<span style=color:#f92672>.</span>from_qs(questions)
+
+
+<span style=color:#a6e22e>@q_router.get</span>(<span style=color:#e6db74>&#34;/{q_id}&#34;</span>)
+<span style=color:#66d9ef>def</span> <span style=color:#a6e22e>get_question</span>(
+    question: Question <span style=color:#f92672>=</span> Depends(adapters<span style=color:#f92672>.</span>retrieve_question),
+) <span style=color:#f92672>-&gt;</span> FastQuestion:
+    <span style=color:#66d9ef>return</span> FastQuestion<span style=color:#f92672>.</span>from_orm(question)
+
+<span style=color:#a6e22e>@c_router.get</span>(<span style=color:#e6db74>&#34;/&#34;</span>)
+<span style=color:#66d9ef>def</span> <span style=color:#a6e22e>get_choices</span>(
+    choices: List[Choice] <span style=color:#f92672>=</span> Depends(adapters<span style=color:#f92672>.</span>retrieve_choices),
+) <span style=color:#f92672>-&gt;</span> FastChoices:
+    <span style=color:#66d9ef>return</span> FastChoices<span style=color:#f92672>.</span>from_qs(choices)
+
+
+<span style=color:#a6e22e>@c_router.get</span>(<span style=color:#e6db74>&#34;/{c_id}&#34;</span>)
+<span style=color:#66d9ef>def</span> <span style=color:#a6e22e>get_choice</span>(choice: Choice <span style=color:#f92672>=</span> Depends(adapters<span style=color:#f92672>.</span>retrieve_choice)) <span style=color:#f92672>-&gt;</span> FastChoice:
+    <span style=color:#66d9ef>return</span> FastChoice<span style=color:#f92672>.</span>from_orm(choice)
+</code></pre></div><h3 id=asgipy><code>asgi.py</code><a href=#asgipy class=hanchor arialabel=Anchor>&#8983;</a></h3><p>Let&rsquo;s also add a FastAPI app into <code>mysite/asgi.py</code>.</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-python data-lang=python><span style=color:#f92672>from</span> fastapi <span style=color:#f92672>import</span> FastAPI
+<span style=color:#f92672>from</span> polls.routers <span style=color:#f92672>import</span> choices_router
+<span style=color:#f92672>from</span> polls.routers <span style=color:#f92672>import</span> questions_router
+
+fastapp <span style=color:#f92672>=</span> FastAPI()
+fastapp<span style=color:#f92672>.</span>include_router(questions_router, tags<span style=color:#f92672>=</span>[<span style=color:#e6db74>&#34;questions&#34;</span>], prefix<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;/question&#34;</span>)
+fastapp<span style=color:#f92672>.</span>include_router(choices_router, tags<span style=color:#f92672>=</span>[<span style=color:#e6db74>&#34;choices&#34;</span>], prefix<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;/choice&#34;</span>)
+</code></pre></div><h3 id=run-servers>Run servers<a href=#run-servers class=hanchor arialabel=Anchor>&#8983;</a></h3><p>First is to generate static files for <code>uvicorn</code> (you may still need <a href=https://whitenoise.evans.io/en/stable/>whitenoise</a>):</p><div class=highlight><pre style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-bash data-lang=bash>python manage.py collectstatic --noinput
+</code></pre></div><p>Now you can start FastAPI server by <code>uvicorn mysite.asgi:fastapp --reload</code> and start Django server by <code>uvicorn mysite.asgi:application --port 8001 --reload</code>.</p><p>Then you&rsquo;ll see your favorite FastAPI&rsquo;s OpenAPI documentation at <code>http://127.0.0.1:8000/docs/</code> and don&rsquo;t forget to check Django admin at <code>http://127.0.0.1:8001/admin/</code>.</p><h2 id=conclusion>Conclusion<a href=#conclusion class=hanchor arialabel=Anchor>&#8983;</a></h2><p>It&rsquo;s easier than we thought to integrate FastAPI and Django ORM, if you tactically separate the adapters of connecting Django ORM and Pydantic models, you&rsquo;ll get a clear and concise directory structure - easy to write and easy to maintain.</p><p>The whole project is also at my <a href=https://github.com/kigawas/fastapi-django>Github</a>, feel free to play with it.</p></div></div><div id=disqus_thread></div><script type=application/javascript>var disqus_config=function(){};(function(){if(["localhost","127.0.0.1"].indexOf(window.location.hostname)!=-1){document.getElementById('disqus_thread').innerHTML='Disqus comments not available by default when the website is previewed locally.';return;}
+var d=document,s=d.createElement('script');s.async=true;s.src='//'+"kigawas-blog"+'.disqus.com/embed.js';s.setAttribute('data-timestamp',+new Date());(d.head||d.body).appendChild(s);})();</script><noscript>Please enable JavaScript to view the <a href=https://disqus.com/?ref_noscript>comments powered by Disqus.</a></noscript><a href=https://disqus.com class=dsq-brlink>comments powered by <span class=logo-disqus>Disqus</span></a></div></div><footer class=footer><div class=footer__inner><div class=copyright><span>© 2020 Powered by <a href=http://gohugo.io>Hugo</a></span>
+<span>:: Theme made by <a href=https://twitter.com/panr>panr</a></span></div></div></footer><script src=/assets/main.js></script><script src=/assets/prism.js></script></div></body></html>
