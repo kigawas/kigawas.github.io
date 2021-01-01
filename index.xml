@@ -5,9 +5,16 @@ Overview As of 2020, amongst the various web benchmarks, the most prestigious an
 According to TechEmpower benchmarks, it can be noticed that some Python frameworks even outperform Gin, the most famous and widely used Go web framework.</description></item><item><title>The integration of FastAPI and Django ORM</title><link>/posts/integrate-fastapi-and-django-orm/</link><pubDate>Mon, 12 Oct 2020 00:00:00 +0000</pubDate><guid>/posts/integrate-fastapi-and-django-orm/</guid><description>This is the English translation of the Japanese original post at qiita, with some modifications.
 Motivation Recently FastAPI is growing incredibly. It&amp;rsquo;s blazingly fast and painless to develop, with 5~10x performance enhancement over Django or Flask.
 I really want to switch to FastAPI from Django, however, it&amp;rsquo;s not that easy to give up Django and its self-sufficient user system as well as the admin page totally. I know it sounds greedy, but in fact there is such convenience.</description></item><item><title>Y-combinator in Python</title><link>/posts/y-combinator-in-python/</link><pubDate>Thu, 22 Nov 2018 00:00:00 +0000</pubDate><guid>/posts/y-combinator-in-python/</guid><description>A brief introduction to lambda calculus Lambda calculus is a language (formal system) to abstract and express calculation itself under only three concise rules.
-Syntax Name Description x Variable Representing some value (λx. M) Abstraction Defining a function, M is also an expression of lambda calculus (M N) Application Calling a function, M and N are expressions of lambda calculus In lambda calculus, we can say &amp;ldquo;applying/calling/invoking a function&amp;rdquo; interchangeably.</description></item><item><title/><link>/about/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>/about/</guid><description>About me A Python &amp;amp; Rust developer.
+Syntax Name Description x Variable Representing some value (λx. M) Abstraction Defining a function, M is also an expression of lambda calculus (M N) Application Calling a function, M and N are expressions of lambda calculus In lambda calculus, we can say &amp;ldquo;applying/calling/invoking a function&amp;rdquo; interchangeably.</description></item><item><title>About me</title><link>/about/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>/about/</guid><description>A Python &amp;amp; Rust developer.
 A blockchain and cryptography enthusiast.
 An amateur linguist and classicist.
-An expatriate in Tokyo, desiring to be a real cosmopolitan.
+An expatriate in Tokyo, aspiring to be a real cosmopolitan.
 An idealist believing no one should be discriminated by anything they can never change.
-You can find me on GitHub or Twitter.</description></item></channel></rss>
+You can find me on GitHub or Twitter.</description></item><item><title>Open source projects</title><link>/projects/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>/projects/</guid><description>Cryptography eciespy Elliptic Curve Integrated Encryption Scheme for secp256k1 in Python.
+eciesrs Elliptic Curve Integrated Encryption Scheme for secp256k1 in Rust, based on pure Rust implementation of secp256k1.
+This is the Rust version of eciespy.
+eciesjs Elliptic Curve Integrated Encryption Scheme for secp256k1 in TypeScript.
+This is the JavaScript/TypeScript version of eciespy.
+ecies-wasm A WASM binding for eciesrs.
+Blockchain python-bip44 Simple Python bip44 implementation. Mnemonic + bip32.
+minichain A simple blockchain system for learning and demonstrating how to implement a UTXO-based blockchain like Bitcoin.</description></item></channel></rss>
