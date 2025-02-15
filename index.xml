@@ -1,21 +1,87 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>map(learn, world)</title><link>/</link><description>Recent content on map(learn, world)</description><generator>Hugo</generator><language>en</language><lastBuildDate>Thu, 08 Aug 2024 01:06:14 +0900</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml"/><item><title>Bridging the Gap: A Rustacean Clean Architecture Approach to Web Development</title><link>/posts/rustacean-clean-architecture-approach/</link><pubDate>Sun, 21 Jul 2024 00:00:00 +0000</pubDate><guid>/posts/rustacean-clean-architecture-approach/</guid><description>Introduction Disclaimer: This article is partly generated with Claude and revamped with GPT-4o mini.
-TL;DR: https://github.com/kigawas/clean-axum
-The Web Development Framework Dilemma In the dynamic world of web development, choosing the right language and framework often feels like solving a Rubik&amp;rsquo;s cube blindfolded. As developers, we frequently find ourselves balancing competing priorities: performance vs. development speed, flexibility vs. structure, scalability vs. ease of use.
-Selecting a web development framework is a multifaceted challenge, whose dilemma often leads to compromises.</description></item><item><title>About me</title><link>/about/</link><pubDate>Fri, 01 Jan 2021 00:00:00 +0000</pubDate><guid>/about/</guid><description>A Python &amp;amp; Rust developer.
-A blockchain and cryptography dilettante and a linguistics and classics aficionado.
-An expatriate in Tokyo, aspiring to be a real cosmopolitan.
-An idealist believing no one should be discriminated by anything they can never change.
-You can find me on GitHub or Twitter.</description></item><item><title>Open source projects</title><link>/projects/</link><pubDate>Fri, 01 Jan 2021 00:00:00 +0000</pubDate><guid>/projects/</guid><description>Cryptography eciespy Elliptic Curve Integrated Encryption Scheme for secp256k1 in Python.
-eciesrs Elliptic Curve Integrated Encryption Scheme for secp256k1 in Rust, based on pure Rust implementation of secp256k1.
-This is the Rust version of eciespy.
-eciesjs Elliptic Curve Integrated Encryption Scheme for secp256k1 in TypeScript.
-This is the JavaScript/TypeScript version of eciespy.
-ecies-wasm A WASM binding for eciesrs.
-Blockchain web3-input-decoder A simple offline web3 transaction input decoder for functions and constructors.</description></item><item><title>Redefining shared behaviors algebraically</title><link>/posts/interface-vs-adt/</link><pubDate>Mon, 28 Dec 2020 00:00:00 +0000</pubDate><guid>/posts/interface-vs-adt/</guid><description>Overview Object-oriented programming is a ubiquitous paradigm all over the software development field as it could be found in the most of prevalent languages: C++, C#, Java, JavaScript, Python, etc. Polymorphism, an important characteristic in OOP, is often implemented by sub-typing in a typical OOP language.
-interface Animal { public void talk(); } class Cat implements Animal { public void talk() { System.out.println(&amp;#34;meow&amp;#34;); } } class Dog implements Animal { public void talk() { System.</description></item><item><title>Why state containers are necessary</title><link>/posts/why-state-containers/</link><pubDate>Wed, 18 Nov 2020 00:00:00 +0000</pubDate><guid>/posts/why-state-containers/</guid><description>This article is partially based on a prior art.
-Overview In modern JavaScript development, using some state container is a prevalent practice: redux for react and vuex for vue. But why it is necessary to integrate those &amp;ldquo;awesome state containers&amp;rdquo;? There might be too many reasons and explanations can be found all over the internet. In contrast, before stepping into the next level, we&amp;rsquo;ll walk through the simplest scenario: states in module A have changed and module B needs to know and react.</description></item><item><title>Reconsider the performance benchmarks in Python web development</title><link>/posts/performance-benchmarks-in-python-web-development/</link><pubDate>Thu, 12 Nov 2020 00:00:00 +0000</pubDate><guid>/posts/performance-benchmarks-in-python-web-development/</guid><description>A few words on common misunderstandings and performance tips of web development benchmarks.
-Overview As of 2020, amongst the various web benchmarks, the most prestigious and reliable one would be TechEmpower benchmarks. Despite the fact that asyncio-based web frameworks prevail on performance in theory and in practice, how performant those frameworks are in pragmatic environments remains to be inspected.
-According to TechEmpower benchmarks, it can be noticed that some Python frameworks even outperform Gin, the most famous and widely used Go web framework.</description></item><item><title>The integration of FastAPI and Django ORM</title><link>/posts/integrate-fastapi-and-django-orm/</link><pubDate>Mon, 12 Oct 2020 00:00:00 +0000</pubDate><guid>/posts/integrate-fastapi-and-django-orm/</guid><description>This is the English translation of the Japanese original post at qiita, with some modifications.
-Motivation Recently FastAPI is growing incredibly. It&amp;rsquo;s blazingly fast and painless to develop, with 5~10x performance enhancement over Django or Flask.
-I really want to switch to FastAPI from Django, however, it&amp;rsquo;s not that easy to give up Django and its self-sufficient user system as well as the admin page totally. I know it sounds greedy, but in fact there is such convenience.</description></item><item><title>Y-combinator in Python</title><link>/posts/y-combinator-in-python/</link><pubDate>Thu, 22 Nov 2018 00:00:00 +0000</pubDate><guid>/posts/y-combinator-in-python/</guid><description>A brief introduction to lambda calculus Lambda calculus is a language (formal system) to abstract and express calculation itself under only three concise rules.
-Syntax Name Description x Variable Representing some value (λx. M) Abstraction Defining a function, M is also an expression of lambda calculus (M N) Application Calling a function, M and N are expressions of lambda calculus In lambda calculus, we can say &amp;ldquo;applying/calling/invoking a function&amp;rdquo; interchangeably.</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>map(learn, world)</title><link>/</link><description>Recent content on map(learn, world)</description><generator>Hugo</generator><language>en</language><lastBuildDate>Sat, 15 Feb 2025 10:47:16 +0900</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml"/><item><title>Handling Async File Responses in Django</title><link>/posts/async-file-response-in-django/</link><pubDate>Fri, 14 Feb 2025 00:00:00 +0000</pubDate><guid>/posts/async-file-response-in-django/</guid><description>&lt;p>When building web applications, serving files efficiently is rather important. While Django provides several ways to handle file downloads, the traditional approaches are synchronous, which are not ideal for large files or concurrent downloads. Let&amp;rsquo;s explore how to implement an asynchronous file response solution that&amp;rsquo;s both efficient and straightforward to use.&lt;/p>
+&lt;h2 id="the-challenge">The Challenge&lt;/h2>
+&lt;p>Django&amp;rsquo;s built-in file serving capabilities are primarily synchronous, which introduce a few challenges:&lt;/p>
+&lt;ul>
+&lt;li>Each file download occupies a worker process&lt;/li>
+&lt;li>Large files block other requests&lt;/li>
+&lt;li>Chunk size is not easily configurable (You need to modify &lt;code>FileResponse.block_size&lt;/code>)&lt;/li>
+&lt;li>Concurrent downloads perform rather poorly&lt;/li>
+&lt;/ul>
+&lt;h2 id="the-solution">The Solution&lt;/h2>
+&lt;p>Our solution addresses these challenges whilst remaining quite maintainable:&lt;/p></description></item><item><title>Bridging the Gap: A Rustacean Clean Architecture Approach to Web Development</title><link>/posts/rustacean-clean-architecture-approach/</link><pubDate>Sun, 21 Jul 2024 00:00:00 +0000</pubDate><guid>/posts/rustacean-clean-architecture-approach/</guid><description>&lt;h2 id="introduction">Introduction&lt;/h2>
+&lt;p>Disclaimer: This article is partly generated with Claude and revamped with GPT-4o mini.&lt;/p>
+&lt;p>TL;DR: &lt;a href="https://github.com/kigawas/clean-axum">https://github.com/kigawas/clean-axum&lt;/a>&lt;/p>
+&lt;h3 id="the-web-development-framework-dilemma">The Web Development Framework Dilemma&lt;/h3>
+&lt;p>In the dynamic world of web development, choosing the right language and framework often feels like solving a Rubik&amp;rsquo;s cube blindfolded. As developers, we frequently find ourselves balancing competing priorities: performance vs. development speed, flexibility vs. structure, scalability vs. ease of use.&lt;/p>
+&lt;p>Selecting a web development framework is a multifaceted challenge, whose dilemma often leads to compromises. But what if there were a way to optimize for all these factors?&lt;/p></description></item><item><title>About me</title><link>/about/</link><pubDate>Fri, 01 Jan 2021 00:00:00 +0000</pubDate><guid>/about/</guid><description>&lt;p>A Python &amp;amp; Rust developer.&lt;/p>
+&lt;p>A blockchain and cryptography dilettante and a linguistics and classics aficionado.&lt;/p>
+&lt;p>An expatriate in Tokyo, aspiring to be a real cosmopolitan.&lt;/p>
+&lt;p>An idealist believing no one should be discriminated by anything they can never change.&lt;/p>
+&lt;p>You can find me on &lt;a href="https://github.com/kigawas">GitHub&lt;/a> or &lt;a href="https://twitter.com/kigawas">Twitter&lt;/a>.&lt;/p></description></item><item><title>Open source projects</title><link>/projects/</link><pubDate>Fri, 01 Jan 2021 00:00:00 +0000</pubDate><guid>/projects/</guid><description>&lt;h3 id="cryptography">Cryptography&lt;/h3>
+&lt;h4 id="eciespyhttpsgithubcomeciespy">&lt;a href="https://github.com/ecies/py">eciespy&lt;/a>&lt;/h4>
+&lt;p>Elliptic Curve Integrated Encryption Scheme for secp256k1 in Python.&lt;/p>
+&lt;h4 id="eciesrshttpsgithubcomeciesrs">&lt;a href="https://github.com/ecies/rs">eciesrs&lt;/a>&lt;/h4>
+&lt;p>Elliptic Curve Integrated Encryption Scheme for secp256k1 in Rust, based on pure Rust implementation of secp256k1.&lt;/p>
+&lt;p>This is the Rust version of eciespy.&lt;/p>
+&lt;h4 id="eciesjshttpsgithubcomeciesjs">&lt;a href="https://github.com/ecies/js">eciesjs&lt;/a>&lt;/h4>
+&lt;p>Elliptic Curve Integrated Encryption Scheme for secp256k1 in TypeScript.&lt;/p>
+&lt;p>This is the JavaScript/TypeScript version of eciespy.&lt;/p>
+&lt;h4 id="ecies-wasmhttpsgithubcomeciesrs-wasm">&lt;a href="https://github.com/ecies/rs-wasm">ecies-wasm&lt;/a>&lt;/h4>
+&lt;p>A WASM binding for eciesrs.&lt;/p>
+&lt;h3 id="blockchain">Blockchain&lt;/h3>
+&lt;h4 id="web3-input-decoderhttpsgithubcomkigawasweb3-input-decoder">&lt;a href="https://github.com/kigawas/web3-input-decoder">web3-input-decoder&lt;/a>&lt;/h4>
+&lt;p>A simple offline web3 transaction input decoder for functions and constructors.&lt;/p></description></item><item><title>Redefining shared behaviors algebraically</title><link>/posts/interface-vs-adt/</link><pubDate>Mon, 28 Dec 2020 00:00:00 +0000</pubDate><guid>/posts/interface-vs-adt/</guid><description>&lt;h2 id="overview">Overview&lt;/h2>
+&lt;p>Object-oriented programming is a ubiquitous paradigm all over the software development field as it could be found in the most of prevalent languages: C++, C#, Java, JavaScript, Python, etc. &lt;a href="https://en.wikipedia.org/wiki/Polymorphism_%28computer_science%29">Polymorphism&lt;/a>, an important characteristic in OOP, is often implemented by sub-typing in a typical OOP language.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">&lt;code class="language-java" data-lang="java">&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">interface&lt;/span> &lt;span style="color:#a6e22e">Animal&lt;/span> {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">public&lt;/span> &lt;span style="color:#66d9ef">void&lt;/span> &lt;span style="color:#a6e22e">talk&lt;/span>();
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">class&lt;/span> &lt;span style="color:#a6e22e">Cat&lt;/span> &lt;span style="color:#66d9ef">implements&lt;/span> Animal {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">public&lt;/span> &lt;span style="color:#66d9ef">void&lt;/span> &lt;span style="color:#a6e22e">talk&lt;/span>() {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> System.&lt;span style="color:#a6e22e">out&lt;/span>.&lt;span style="color:#a6e22e">println&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;meow&amp;#34;&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>&lt;span style="color:#66d9ef">class&lt;/span> &lt;span style="color:#a6e22e">Dog&lt;/span> &lt;span style="color:#66d9ef">implements&lt;/span> Animal {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> &lt;span style="color:#66d9ef">public&lt;/span> &lt;span style="color:#66d9ef">void&lt;/span> &lt;span style="color:#a6e22e">talk&lt;/span>() {
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> System.&lt;span style="color:#a6e22e">out&lt;/span>.&lt;span style="color:#a6e22e">println&lt;/span>(&lt;span style="color:#e6db74">&amp;#34;bowwow&amp;#34;&lt;/span>);
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span> }
+&lt;/span>&lt;/span>&lt;span style="display:flex;">&lt;span>}
+&lt;/span>&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>The &lt;code>interface&lt;/code>, or &lt;code>abstract class&lt;/code> in some languages, here indicates &lt;strong>a protocol of shared behaviors&lt;/strong>, normally there&amp;rsquo;s no way to get access to data in the interface, thus, only a few of default behaviors can be implemented in the interface rather than in its subclasses.&lt;/p></description></item><item><title>Why state containers are necessary</title><link>/posts/why-state-containers/</link><pubDate>Wed, 18 Nov 2020 00:00:00 +0000</pubDate><guid>/posts/why-state-containers/</guid><description>&lt;p>This article is partially based on &lt;a href="https://www.zhihu.com/question/63726609/answer/934233429">a prior art&lt;/a>.&lt;/p>
+&lt;h2 id="overview">Overview&lt;/h2>
+&lt;p>In modern JavaScript development, using some state container is a prevalent practice: &lt;code>redux&lt;/code> for &lt;code>react&lt;/code> and &lt;code>vuex&lt;/code> for &lt;code>vue&lt;/code>. But why it is necessary to integrate those &amp;ldquo;awesome state containers&amp;rdquo;? There might be too many reasons and explanations can be found all over the internet. In contrast, before stepping into the next level, we&amp;rsquo;ll walk through the simplest scenario: states in module &lt;code>A&lt;/code> have changed and module &lt;code>B&lt;/code> needs to know and react.&lt;/p></description></item><item><title>Reconsider the performance benchmarks in Python web development</title><link>/posts/performance-benchmarks-in-python-web-development/</link><pubDate>Thu, 12 Nov 2020 00:00:00 +0000</pubDate><guid>/posts/performance-benchmarks-in-python-web-development/</guid><description>&lt;p>A few words on common misunderstandings and performance tips of web development benchmarks.&lt;/p>
+&lt;h2 id="overview">Overview&lt;/h2>
+&lt;p>As of 2020, amongst the various web benchmarks, the most prestigious and reliable one would be &lt;a href="https://www.techempower.com/benchmarks/#section=data-r19&amp;amp;hw=cl&amp;amp;test=fortune&amp;amp;l=zijzen-1r">TechEmpower benchmarks&lt;/a>. Despite the fact that &lt;a href="https://docs.python.org/3/library/asyncio.html">asyncio&lt;/a>-based web frameworks prevail on performance in theory and in practice, &lt;strong>how&lt;/strong> performant those frameworks are in pragmatic environments remains to be inspected.&lt;/p>
+&lt;p>According to TechEmpower benchmarks, it can be noticed that some Python frameworks even &lt;a href="https://www.techempower.com/benchmarks/#section=data-r19&amp;amp;hw=ph&amp;amp;test=fortune&amp;amp;l=zijmrj-1r">outperform Gin&lt;/a>, the most famous and widely used Go web framework. In this article, some practical experiments will be carried out over the issue.&lt;/p></description></item><item><title>The integration of FastAPI and Django ORM</title><link>/posts/integrate-fastapi-and-django-orm/</link><pubDate>Mon, 12 Oct 2020 00:00:00 +0000</pubDate><guid>/posts/integrate-fastapi-and-django-orm/</guid><description>&lt;p>This is the English translation of the Japanese original post at &lt;a href="https://qiita.com/kigawas/items/80e48ccce98a35f65fff">qiita&lt;/a>, with some modifications.&lt;/p>
+&lt;h2 id="motivation">Motivation&lt;/h2>
+&lt;p>Recently FastAPI is &lt;a href="https://star-history.t9t.io/#tiangolo/fastapi">growing incredibly&lt;/a>. It&amp;rsquo;s blazingly fast and painless to develop, with &lt;a href="https://www.techempower.com/benchmarks/#section=data-r20&amp;amp;hw=ph&amp;amp;test=fortune&amp;amp;l=zijzen-sf">5~10x performance enhancement&lt;/a> over Django or Flask.&lt;/p>
+&lt;p>I really want to switch to FastAPI from Django, however, it&amp;rsquo;s not that easy to give up Django and its self-sufficient user system as well as the admin page totally. I know it sounds greedy, but in fact there &lt;strong>is&lt;/strong> such convenience. This time I&amp;rsquo;ll show you how to integrate FastAPI and Django ORM simply and quickly.&lt;/p></description></item><item><title>Y-combinator in Python</title><link>/posts/y-combinator-in-python/</link><pubDate>Thu, 22 Nov 2018 00:00:00 +0000</pubDate><guid>/posts/y-combinator-in-python/</guid><description>&lt;h2 id="a-brief-introduction-to-lambda-calculus">A brief introduction to lambda calculus&lt;/h2>
+&lt;p>&lt;a href="https://en.wikipedia.org/wiki/Lambda_calculus">Lambda calculus&lt;/a> is a language (formal system) to abstract and express calculation itself under only three concise rules.&lt;/p>
+&lt;table>
+ &lt;thead>
+ &lt;tr>
+ &lt;th>Syntax&lt;/th>
+ &lt;th>Name&lt;/th>
+ &lt;th>Description&lt;/th>
+ &lt;/tr>
+ &lt;/thead>
+ &lt;tbody>
+ &lt;tr>
+ &lt;td>x&lt;/td>
+ &lt;td>Variable&lt;/td>
+ &lt;td>Representing some value&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>(λx. M)&lt;/td>
+ &lt;td>Abstraction&lt;/td>
+ &lt;td>Defining a function, M is also an expression of lambda calculus&lt;/td>
+ &lt;/tr>
+ &lt;tr>
+ &lt;td>(M N)&lt;/td>
+ &lt;td>Application&lt;/td>
+ &lt;td>Calling a function, M and N are expressions of lambda calculus&lt;/td>
+ &lt;/tr>
+ &lt;/tbody>
+&lt;/table>
+&lt;blockquote>
+&lt;p>In lambda calculus, we can say &amp;ldquo;applying/calling/invoking a function&amp;rdquo; interchangeably.&lt;/p></description></item></channel></rss>
